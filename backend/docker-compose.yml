@@ -31,8 +31,8 @@ services:
     working_dir: /docker
     entrypoint: >
       sh -c "
-        docker build --no-cache -t pushcode-java ./java &&
-        docker build --no-cache -t pushcode-python ./python &&
-        docker build --no-cache -t pushcode-c ./c &&
-        docker build --no-cache -t pushcode-cpp ./cpp
+        docker build -t pushcode-java ./java &&
+        docker build -t pushcode-python ./python &&
+        docker build -t pushcode-c ./c &&
+        docker build -t pushcode-cpp ./cpp
         "
