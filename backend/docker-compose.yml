@@ -10,8 +10,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
+      # We use the container_name of your Eureka server here
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://pushcode-eureka:8761/eureka/
       - EXECUTION_MAX_TIME_SECONDS=30
-      # Ensure these match your @Value keys in DockerCommandBuilder
       - EXECUTION_MEMORY_LIMIT=256m
       - EXECUTION_CPU_LIMIT=0.5
       - DOCKER_IMAGES_JAVA=pushcode-java
@@ -21,6 +22,8 @@ services:
     depends_on:
       build-images:
         condition: service_completed_successfully
+    networks:
+      - pushcode-network
 
   build-images:
     image: docker:24.0.7-cli
@@ -36,3 +39,9 @@ services:
         docker build -t pushcode-c ./c &&
         docker build -t pushcode-cpp ./cpp
         "
+    networks:
+      - pushcode-network
+
+networks:
+  pushcode-network:
+    external: true
