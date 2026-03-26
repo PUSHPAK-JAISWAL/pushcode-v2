@@ -6,11 +6,9 @@ services:
       - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
-      - EUREKA_CLIENT_FETCH_REGISTRY=false
     networks:
       - pushcode-network
 
 networks:
   pushcode-network:
-    driver: bridge
+    external: true
