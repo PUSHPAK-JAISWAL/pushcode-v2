@@ -1,0 +1,14 @@
+services:
+  security-server:
+    build:
+      context: ./security-service # Adjust this path to your Security folder
+    container_name: pushcode-security
+    ports:
+      - "8082:8082"
+    networks:
+      - pushcode-network
+    restart: always
+
+networks:
+  pushcode-network:
+    external: true
