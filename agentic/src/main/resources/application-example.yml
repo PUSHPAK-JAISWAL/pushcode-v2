@@ -1,0 +1,19 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: agentic-service
+
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: https://api.groq.com/openai/v1
+      api-key: YOUR_GROQ_API_KEY_HERE
+      model-name: gpt-oss-120b
+      temperature: 0.1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://pushcode-eureka:8761/eureka/
