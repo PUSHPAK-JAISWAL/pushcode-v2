@@ -1,0 +1,23 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: security-service
+
+  data:
+    mongodb:
+      uri: your_uri
+
+app:
+  jwt:
+    secret: AmbUrBYyJUbFJcGpbfPzz2ipdibr-ajtNGK3sRV2xUuj3aYzxx96_wHqnf3YKaRCwQnLAAQIu0GgXcLHNzUQvA
+    expiration-ms: 3600000
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://pushcode-eureka:8761/eureka/
+  instance:
+    prefer-ip-address: true
