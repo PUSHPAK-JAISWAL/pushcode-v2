@@ -1,6 +1,6 @@
 package com.pushcode.security.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthResponse {
 
-    @NotNull
+    @Nonnull
     private String token;
 
     private String tokenType = "Bearer";
