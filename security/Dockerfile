@@ -11,6 +11,8 @@ WORKDIR /app
 
 COPY --from=build /app/target/*.jar security-service.jar
 
+COPY src/main/resources/application.yaml application.yaml
+
 EXPOSE 8082
 
 ENTRYPOINT ["java", "-jar", "security-service.jar"]
