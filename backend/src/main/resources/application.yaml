@@ -2,6 +2,15 @@ spring:
   application:
     name: execution-service
 
+  mongodb:
+    uri: mongodb+srv://pushpakmjaiswal:Jaiswalpm%4026@cluster0.tjonnlq.mongodb.net/pushcodeSecurity?appName=Cluster0
+
+
+app:
+  jwt:
+    secret: AmbUrBYyJUbFJcGpbfPzz2ipdibr-ajtNGK3sRV2xUuj3aYzxx96_wHqnf3YKaRCwQnLAAQIu0GgXcLHNzUQvA
+    expiration-ms: 3600000
+
 execution:
   max-time-seconds: 10
   idle-timeout-seconds: 15
