@@ -2,8 +2,9 @@ package com.pushcode.agentic.controller;
 
 import com.pushcode.agentic.dto.*;
 import com.pushcode.agentic.service.PushCodeAgent;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,12 +22,18 @@ public class AgenticController {
     }
 
     @PostMapping("/process")
-    public AnalysisResponse processCode(@RequestBody CodeAnalysisRequest request) {
+    public AnalysisResponse processCode(
+            @RequestBody CodeAnalysisRequest request,
+            HttpServletRequest httpServletRequest
+    ) {
+
         AnalysisResponse analysis = agent.analyze(request.getCode());
 
-        // NORMALIZATION GUARD: Ensure language is uppercase for Execution Service Enums
+        // NORMALIZATION GUARD
         if (analysis.getLanguage() != null) {
-            analysis.setLanguage(analysis.getLanguage().toUpperCase().trim());
+            analysis.setLanguage(
+                    analysis.getLanguage().toUpperCase().trim()
+            );
         }
 
         if (isInvalidLanguage(analysis.getLanguage())) {
@@ -34,23 +41,48 @@ public class AgenticController {
         }
 
         try {
+
             ExecutionRequest execReq = new ExecutionRequest(
                     analysis.getLanguage(),
                     request.getCode()
             );
 
-            ResponseEntity<ExecutionResponse> execResponse = restTemplate.postForEntity(
-                    "http://execution-service/api/execute",
-                    execReq,
-                    ExecutionResponse.class
-            );
+            // Extract Bearer token
+            String authHeader =
+                    httpServletRequest.getHeader("Authorization");
+
+            // Forward headers
+            HttpHeaders headers = new HttpHeaders();
+
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                headers.set("Authorization", authHeader);
+            }
+
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<ExecutionRequest> entity =
+                    new HttpEntity<>(execReq, headers);
+
+            ResponseEntity<ExecutionResponse> execResponse =
+                    restTemplate.exchange(
+                            "http://execution-service/api/execute",
+                            HttpMethod.POST,
+                            entity,
+                            ExecutionResponse.class
+                    );
 
             if (execResponse.getBody() != null) {
-                analysis.setSessionId(execResponse.getBody().getSessionId());
+                analysis.setSessionId(
+                        execResponse.getBody().getSessionId()
+                );
             }
 
         } catch (Exception e) {
-            analysis.setExplanation("Analysis finished, but Execution Service failed: " + e.getMessage());
+            analysis.setExplanation(
+                    "Analysis finished, but Execution Service failed: "
+                            + e.getMessage()
+            );
+
             analysis.setLanguage("ERROR");
         }
 
