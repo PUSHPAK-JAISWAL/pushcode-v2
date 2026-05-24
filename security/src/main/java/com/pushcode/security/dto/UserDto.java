@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Data
 public class UserDto {
-    private ObjectId id;
+    private String id;
     private String email;
     private Set<String> roles;
 }
