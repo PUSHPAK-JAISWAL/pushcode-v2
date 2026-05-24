@@ -19,7 +19,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    private ObjectId id;
+    private String id;
     private String email;
     private String password;
     private Set<String> roles;

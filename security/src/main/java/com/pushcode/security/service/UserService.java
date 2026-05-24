@@ -44,7 +44,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(ObjectId id) {
+    public Optional<User> findById(String id) {
         return userRepository.findById(id);
     }
 
@@ -62,7 +62,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(ObjectId id, User update) {
+    public User updateUser(String id, User update) {
         var u = userRepository.findById(id).orElseThrow(()-> new NoSuchElementException("User not found"));
 
         if(update.getPassword() != null && !update.getPassword().isBlank()) {
@@ -76,7 +76,7 @@ public class UserService {
         return userRepository.save(u);
     }
 
-    public void deleteUser(ObjectId id) {
+    public void deleteUser(String id) {
         userRepository.deleteById(id);
     }
 
